@@ -1,28 +1,17 @@
-document.querySelector('#grid').addEventListener('mouseover', function(e) {
-    e.preventDefault();
+document.querySelector('#grid').addEventListener('click', function(e) {
     if(e.target.tagName === 'IMG') {
-        var thumbnail = e.target;
-        var lowRes = thumbnail.src;
-        var preview = document.createElement('IMG');
-        preview.className = 'preview';
-        preview.src = lowRes.substring(0, lowRes.length - 7) + '.jpg';
-        preview.style.left += e.offsetX + 'px';
-        preview.style.top += e.offsetY + 'px';
-        thumbnail.parentNode.appendChild(preview);
+        var count = this.querySelectorAll('img').length;
+        if(count > 1) {
+            var li = e.target.parentNode;
+            li.removeChild(e.target);
+            li.parentNode.removeChild(li);
 
-        thumbnail.addEventListener('mouseout', function out(d) {
-            this.parentNode.removeChild(preview);
-            this.removeEventListener('mouseout', out, false);
-            this.removeEventListener('mousemove', move, false);
-        }, false)
-
-        thumbnail.addEventListener('mousemove', move, false);
-
-        function move(event) {
-            var pre = this.parentNode.querySelector('.preview');
-            pre.style.left = event.offsetX + 10 + 'px';
-            pre.style.top = event.offsetY + +10 + 'px';
-
+            if (count === 2) {
+                document.querySelector('h2').innerText = 
+                    'You picked: ' + this.querySelector('img').alt;
+                this.querySelector('img').parentNode.style.margin = "auto";
+                this.querySelector('img').parentNode.style.display = "block";
+            }
         }
-    };
+    }
 }, false)
